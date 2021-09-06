@@ -1,0 +1,234 @@
+---
+title: "GRAFICOSyTABLAS"
+output: pdf_document
+---
+
+
+```{r llama codigos, warning=F, include=T, message=F, echo=FALSE}
+library(knitr) # para generar reporte Rmarkdown
+library(stringr)
+library(reshape) 
+library(dplyr) 
+library(ggplot2)
+library(ggthemes) # para ggplot
+library(patchwork) # para unir gráficos de ggplot
+library(strucchange) # libreria utilizada para análisis de quiebres
+
+dir.Fig     <-"Figuras/" # carpeta de las figuras utilizadas y generadas en este estudio
+fig         <-c("pdf","bmp") # formato de figuras generadas por este código
+dir.0       <-getwd() # directorio de trabajo 
+
+```
+
+```{=tex}
+\pagebreak
+\normalsize
+```
+
+
+```{r Fig2, warning=F, include=T, message=F, echo=FALSE,fig.height=3,fig.width=5,fig.align="center",fig.path="Figuras/",dev=fig}
+year<-seq(2012,2020,1)
+desembarques<-c(4033,5318,4163,7547,5097,3853,653,1352,NA)
+supuesto<-c(rep(NA,8),2819)
+
+
+par(mfcol=c(1,1),mar=c(2,4,1,4))
+plot(year,desembarques,type="h",ylab="Desembarques t",xlab="",ylim=c(0,8000),lwd=20,col=4,cex.axis=0.7)
+lines(year,supuesto,type="h",lwd=20,col="orange",axis=F)
+legend(2017,8000,c("datos oficiales","supuesto"),
+       lwd=c(12,12),col=c(4,"orange"),bty="n",cex=0.7)
+
+```
+```{=tex}
+\small
+\textbf{Figura 2}. Desembarques oficiales anuales de sardina austral en aguas interiores del Mar de Chiloé entre los años 2006 y 2019 (fuente: Sernapesca).
+\vspace{0.5cm} 
+\normalsize
+```
+
+
+```{r Fig3,eval=T,warning=F, include=T, message=F, echo=FALSE,fig.height=8,fig.width=7,fig.align="center",fig.path="Figuras/",dev=fig}
+
+datafrec<-read.table(paste(getwd(),"/Tallasmensuales.txt",sep=""),header = FALSE, sep = "")
+
+tallas     <-seq(4,20,0.5)                                            
+ntallas    <-length(tallas)    
+etf_obs <- data.frame(datafrec[,3:35])
+yearf   <- datafrec[,1]
+nyearf  <-length(yearf)  
+month <- datafrec[,2]
+nmonth <-length(month)
+
+obs  <- as.data.frame(etf_obs) %>% mutate(year=yearf) %>% mutate(mes=month) %>% melt(id.vars=c('year','mes'))%>%
+          mutate(talla = rep(tallas, each=nyearf)) 
+
+
+fig0 <-   ggplot(filter(obs,year==2015)) + 
+          geom_bar(aes(x = talla, y = value), stat="identity", fill='gray66', color = 'gray28') + 
+          facet_grid(mes~year) + 
+          labs(x = '', y = 'Proporción de tallas de la captura')  + 
+          theme(panel.background = element_rect(fill ="gray99"),axis.text.y = element_text(hjust = 1, size=6)) + 
+          theme(panel.grid=element_line(color=NA)) +
+          scale_x_continuous(breaks = seq(from = 2, to = 20, by = 2))+
+          scale_y_continuous(breaks = seq(from = 0, to = 0.3, by = 0.1))
+
+fig1 <-   ggplot(filter(obs,year==2016)) + 
+          geom_bar(aes(x = talla, y = value), stat="identity", fill='gray66', color = 'gray28') + 
+          facet_grid(mes~year) + 
+          labs(x = 'Tallas', y = 'Proporción de tallas de la captura')  + 
+          theme(panel.background = element_rect(fill ="gray99"),axis.text.y = element_text(hjust = 1, size=6)) + 
+          theme(panel.grid=element_line(color=NA)) + 
+          scale_x_continuous(breaks = seq(from = 2, to = 20, by = 2)) +
+          scale_y_continuous(breaks = seq(from = 0, to = 0.3, by = 0.1)) 
+          
+fig2 <-   ggplot(filter(obs,year==2017)) + 
+          geom_bar(aes(x = talla, y = value), stat="identity", fill='gray66', color = 'gray28') + 
+          facet_grid(mes~year) + 
+          labs(x = '', y = '')  + 
+          theme(panel.background = element_rect(fill ="gray99"),axis.text.y = element_text(hjust = 1, size=6)) + 
+          theme(panel.grid=element_line(color=NA)) +
+          scale_x_continuous(breaks = seq(from = 2, to = 20, by = 2))+
+          scale_y_continuous(breaks = seq(from = 0, to = 0.3, by = 0.1))  
+          
+fig3 <-   ggplot(filter(obs,year==2018)) + 
+          geom_bar(aes(x = talla, y = value), stat="identity", fill='gray66', color = 'gray28') + 
+          facet_grid(mes~year) + 
+          labs(x = 'Tallas', y = '')  + 
+          theme(panel.background = element_rect(fill ="gray99"),axis.text.y = element_text(hjust = 1, size=6)) + 
+          theme(panel.grid=element_line(color=NA)) +
+          scale_x_continuous(breaks = seq(from = 2, to = 20, by = 2))+
+          scale_y_continuous(breaks = seq(from = 0, to = 0.3, by = 0.1))
+
+fig4 <-   ggplot(filter(obs,year==2019)) + 
+          geom_bar(aes(x = talla, y = value), stat="identity", fill='gray66', color = 'gray28') + 
+          facet_grid(mes~year) + 
+          labs(x = 'Tallas', y = '')  + 
+          theme(panel.background = element_rect(fill ="gray99"),axis.text.y = element_text(hjust = 1, size=6)) + 
+          theme(panel.grid=element_line(color=NA)) +
+          scale_x_continuous(breaks = seq(from = 2, to = 20, by = 2))+
+          scale_y_continuous(breaks = seq(from = 0, to = 0.3, by = 0.1))
+
+fig0+fig2+fig4+fig1+fig3
+
+```
+```{=tex}
+\small
+\textbf{Figura 3}. Estructuras de tallas de la flota que opera sobre sardina austral Región de Aysén. 
+\vspace{0.5cm}
+\normalsize
+```
+
+```{r Fig4,eval=T,warning=F, include=T, message=F, echo=FALSE,fig.height=6,fig.width=3,fig.align="center",fig.path="Figuras/",dev=fig}
+
+datafrec<-read.table(paste(getwd(),"/TallasmensualesCruceros.txt",sep=""),header = FALSE, sep = "")
+
+
+tallas     <-seq(4,20,0.5)                                            
+ntallas    <-length(tallas)    
+etf_obs <- data.frame(datafrec[,3:35])
+yearf   <- datafrec[,1]
+nyearf  <-length(yearf)  
+month <- datafrec[,2]
+nmonth <-length(month)
+
+obs  <- as.data.frame(etf_obs) %>% mutate(year=yearf) %>% mutate(mes=month) %>% melt(id.vars=c('year','mes'))%>%
+          mutate(talla = rep(tallas, each=nyearf)) 
+
+
+fig0 <-   ggplot(filter(obs,mes==4)) + 
+          geom_bar(aes(x = talla, y = value), stat="identity", fill='gray66', color = 'gray28') + 
+          facet_grid(year~mes) + 
+          labs(x = '', y = 'Proporción de tallas del crucero')  + 
+          theme(panel.background = element_rect(fill ="gray99"),axis.text.y = element_text(hjust = 1, size=6)) + 
+          theme(panel.grid=element_line(color=NA)) +
+          scale_x_continuous(breaks = seq(from = 2, to = 20, by = 2))+
+          scale_y_continuous(breaks = seq(from = 0, to = 0.3, by = 0.1))
+
+
+fig0
+
+```
+
+```{=tex}
+\small
+\textbf{Figura 4}. Estructuras de tallas obtenidas del crucero acústico  de sardina austral Región de Aysén. 
+\vspace{0.5cm}
+\normalsize
+```
+
+```{r Fig4b,eval=T,warning=F, include=T, message=F,eval=F, echo=FALSE,fig.height=7.5,fig.width=6,fig.align="center",fig.path="Figuras/",dev=fig}
+
+year <- seq(2012,2020,1)
+captura <- c(4033,5318,4163,7547,5097,3853,653,1352,2819)
+crucero <- c(0,106685,32841,21973,44923,35346,24805,6568,0)
+
+
+plot(year,crucero,type="o")
+lines(year,captura,type="o",col=2)
+
+
+```
+
+
+```{r Fig9, warning=F, include=T, message=F, echo=FALSE,fig.height=3,fig.width=5,fig.align="center",fig.path="Figuras/",dev=fig}
+year<-seq(2012,2020,1)
+desembarques<-c(4033,5318,4163,7547,5097,3853,653,1352,NA)
+supuesto<-c(rep(NA,8),2819)
+biomasa<-c(NA,106685,32841,21973,44923,35346,24805,6568,NA)
+
+par(mfcol=c(1,1),mar=c(2,4,1,4))
+plot(year,desembarques,type="h",ylab="Desembarques t",xlab="",ylim=c(0,8000),lwd=20,col=4,cex.axis=0.7)
+lines(year,supuesto,type="h",lwd=20,col="orange",axis=F)
+legend(2017,8000,c("datos oficiales","supuesto","crucero"),
+       lwd=c(12,12,2),col=c(4,"orange",1),bty="n",cex=0.7)
+par(new=TRUE)
+plot(year,biomasa,type="l",lwd=2,axes=F,ylab="",cex.axis=0.7)
+axis(4,cex.axis=0.7)
+mtext("Biomasa crucero",side=4,line=3)
+
+```
+
+```{=tex}
+\small
+\textbf{Figura 9}. Desembarque de sardina austral en la región de Aysén (fuente: Sernapesca) y biomasa estimada en el crucero de evaluación directa.
+\vspace{0.5cm}
+\normalsize
+```
+
+
+```{r deplecion,warning=F, include=T, message=F, echo=FALSE,fig.height=3.5,fig.width=5,fig.align="center",fig.path="Figuras/",dev=fig}
+year<-seq(2013,2020,1)
+deplecion<-c(1.00,0.66,0.60,0.34,0.22,0.13,0.22,0.26)
+
+par(mfcol=c(1,1),mar=c(4,4,1,4))
+plot(year,deplecion,type="o",ylab="Depleción del stock",xlab="Año",ylim=c(0,1),lwd=2,col=4,cex.axis=0.7)
+
+```
+
+```{=tex}
+\small
+\textbf{Figura 10}. Índice de depleción del stock según la metodología de Hilbor y Mangel (1997) para sardina austral en aguas interiores de la región de Aysén.
+\vspace{0.5cm}
+\normalsize
+```
+```{r Fig14,warning=F, include=T, message=F, echo=FALSE,fig.height=6,fig.width=6,fig.align="center",fig.path="Figuras/",dev=fig}
+
+year<-seq(2012,2020,1)
+biomasa<-c(16669,12608,10088,9655,5874,4371,3473,5372,7498)
+Ft<-c(0.24,0.42,0.41,0.78,0.87,0.88,0.19,0.25,0.38)
+
+par(mfcol=c(2,1),mar=c(4,4,1,4))
+plot(year,biomasa/8317,type="o",ylab="B/Brms",xlab="",ylim=c(0,2))
+abline(h=c(1,0.5),col=c(3,2),lty=2)
+text(c(2013,2013),c(1,0.5),c("Brms","Blim"))
+plot(year,Ft/0.46,type="o",ylab="F/Frms",xlab="",ylim=c(0,2))
+abline(h=c(1),col=c(3),lty=2)
+text(c(2013),c(1),c("Frms"))
+
+```
+
+```{=tex}
+\small
+\textbf{Figura 14}. Series históricas de la razón $B/B_{RMS}$ y $F/F_{RMS}$. Se muestran los puntos biológicos de referencia respectivos en líneas segmentadas horizontales. \vspace{0.5cm}
+\normalsize
+```
