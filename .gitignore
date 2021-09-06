@@ -37,3 +37,13 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+PORTADA_FINAL.log
+
+PORTADA_INICIAL.log
+
+PRIMER_INFORME_sardinaaustralAysen.log
+
+PRIMER_INFORME.Rproj
+
+Zhou2013.R
