@@ -1,0 +1,126 @@
+---
+title: Revisión del Estatus y  Captura Biológicamente Aceptable 2021 de sardina austral de la Región de Aysén
+author: "María José Zúñiga"
+date: 'Sesión N°4: 01-07-2021'
+output:
+   beamer_presentation:
+    colortheme: rose
+    theme: Antibes
+subtitle: Comité Científico de Pesquerías de Pequeños Pelágicos
+institute: INSTITUTO DE FOMENTO PESQUERO
+---
+
+# Modelos data poor utilizados
+
+- **Método de Hilborn & Mangel (1997) (determinista)**
+* Utiliza datos de captura e índice de crucero
+* se utiliza el nivel de reducción del último año
+
+- **Método de Zhou et al. (2013)**
+* Utiliza sólo datos de captura
+* Utiliza nivel de reducción estimado por el método anterior
+* Se utiliza para estimar el Estatus y CBA 
+
+
+# Desembarques de sardina austral en la Región de Aysén
+```{=tex}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{Figuras/Fig9_InformeFinal-1.pdf}
+\end{figure}
+```
+
+# Índice de depleción del stock según la metodología de Hilborn y Mangel (1997)
+
+```{=tex}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{Figuras/Fig10_InformeFinal-1.pdf}
+\end{figure}
+```
+
+# Estimaciones de biomasa total de sardina austral en la Región de Aysén
+
+
+```{=tex}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{Figuras/Fig1_Zhou2013_biomasa-1.pdf}
+\end{figure}
+```
+
+
+# Comparación método de Hilborn y Mangel (1997) y Zhou et al. (2013)
+
+```{=tex}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\textwidth]{Figuras/Fig7_Zhou2013_compara-1.pdf}
+\end{figure}
+```
+
+
+# Análisis de sensibilidad
+
+```{=tex}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{Figuras/Fig2_Zhou2013_depletion-1.pdf}
+\end{figure}
+```
+
+
+# Series históricas de la razón $B/B_{RMS}$ y $F/F_{RMS}$
+
+
+```{=tex}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{Figuras/Fig11_InformeFinal-1.pdf}
+\end{figure}
+```
+
+# Diagrama de fase de sardina austral en la Región de Aysén
+
+
+```{=tex}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{Figuras/Fig4_Zhou2013_fase-1.pdf}
+\end{figure}
+```
+
+# CBA inicial 2021 (Asesoría de septiembre 2020 - Hito 1)
+
++-------------+----------+----------+----------+
+| Percentiles | F = 0,31 | F = 0,46 | F = 0,58 |
++:===========:+:========:+:========:+:========:+
+| 10%         | 2.770    | 4.155    | 5.193    |
++-------------+----------+----------+----------+
+| 20%         | 2.779    | 4.169    | 5.211    |
++-------------+----------+----------+----------+
+| 30%         | 2.786    | 4.179    | 5.223    |
++-------------+----------+----------+----------+
+| 40%         | 2.791    | 4.186    | 5.233    |
++-------------+----------+----------+----------+
+| 50%         | 2.797    | 4.196    | 5.245    |
++-------------+----------+----------+----------+
+
+Considerando un $F$ = 0,31 equivalente a 2/3 $F_{RMS}$, el CCT-PP recomendó una CBA máxima de 2.797 toneladas para el año 2021.
+
+# Actualización de la CBA 2021 (Asesoría de junio 2021 - Hito 2)
+
++-------------+----------+----------+----------+
+| Percentiles | F = 0,31 | F = 0,46 | F = 0,58 |
++=============+==========+==========+==========+
+| 10%         | 2.969    | 4.453    | 5.566    |
++-------------+----------+----------+----------+
+| 20%         | 2.975    | 4.462    | 5.578    |
++-------------+----------+----------+----------+
+| 30%         | 2.984    | 4.475    | 5.594    |
++-------------+----------+----------+----------+
+| 40%         | 2.992    | 4.488    | 5.610    |
++-------------+----------+----------+----------+
+| 50%         | 2.995    | 4.492    | 5.615    |
++-------------+----------+----------+----------+
+
