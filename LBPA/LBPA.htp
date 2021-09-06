@@ -1,0 +1,143 @@
+#if !defined(_LBPA_)
+#  define _LBPA_
+
+class model_data : public ad_comm{
+  data_vector biolpar;
+  data_number nages;
+  data_number nrep;
+  data_vector pond;
+  data_number nlength;
+  data_vector len_bins;
+  data_matrix LF_data;
+  data_number L50prior;
+  data_number slopeprior;
+  data_number Fcrprior;
+  data_number Loprior;
+  data_number s1prior;
+  data_number s2prior;
+  data_number cv4;
+  data_number cv99;
+  data_number cv100;
+  data_number cv1;
+  data_number cv2;
+  data_number cv3;
+  data_int f3;
+  data_int f4;
+  data_int f2;
+  data_int f7;
+  data_int f5;
+  data_int f6;
+  double logL50ini;
+  double logslopeini;
+  double logFcrini;
+  double logLoini;
+  double logs1ini;
+  double logs2ini;
+  data_number ratio;
+  data_number h;
+  data_number nm;
+  ~model_data();
+  model_data(int argc,char * argv[]);
+  friend class model_parameters;
+};
+
+class model_parameters : public model_data ,
+  public function_minimizer
+{
+public:
+  ~model_parameters();
+  void preliminary_calculations(void);
+  void set_runtime(void);
+  static int mc_phase(void)
+  {
+    return initial_params::mc_phase;
+  }
+  static int mceval_phase(void)
+  {
+    return initial_params::mceval_phase;
+  }
+  static int sd_phase(void)
+  {
+    return initial_params::sd_phase;
+  }
+  static int current_phase(void)
+  {
+    return initial_params::current_phase;
+  }
+  static int last_phase(void)
+  {
+    return (initial_params::current_phase
+      >=initial_params::max_number_phases);
+  }
+  static prevariable current_feval(void)
+  {
+    return *objective_function_value::pobjfun;
+  }
+private:
+  dvariable adromb(dvariable(model_parameters::*f)(const dvariable&), double a, double b, int ns)
+  {
+    using namespace std::placeholders;
+    _func func = std::bind(f, this, _1);
+    return function_minimizer::adromb(func, a, b, ns);
+  }
+  ivector integer_control_flags;
+  dvector double_control_flags;
+  param_init_number log_Fcr;
+  param_init_number log_L50;
+  param_init_number log_rango;
+  param_init_number log_alfa;
+  param_init_number log_beta;
+  param_init_number log_Lo;
+  param_init_number log_Ftar;
+  param_vector N0;
+  param_vector Ntar;
+  param_vector N;
+  param_vector Sel_a;
+  param_vector Sel;
+  param_vector F;
+  param_vector Z;
+  param_vector S;
+  param_vector mu_edad;
+  param_vector sigma_edad;
+  param_vector wmed;
+  param_vector msex;
+  param_vector Ps;
+  param_vector pred_Ctot_a;
+  param_vector pred_Ctot;
+  param_vector likeval;
+  param_vector edades;
+  param_matrix prop_obs;
+  param_vector prop_pred;
+  param_number Linf;
+  param_number k;
+  param_number Lo;
+  param_number M;
+  param_number s;
+  param_number SPR;
+  param_number SPRtar;
+  param_number Fref;
+  param_number YPR;
+  param_number BPR;
+  param_matrix Prob_talla;
+  param_matrix FrecL;
+  param_number alfa;
+  param_number beta;
+  param_number dts;
+  param_number B0;
+  param_number slope;
+  param_number prior_function_value;
+  param_number likelihood_function_value;
+  objective_function_value f;
+public:
+  virtual void userfunction(void);
+  virtual void report(const dvector& gradients);
+  virtual void final_calcs(void);
+  model_parameters(int sz,int argc, char * argv[]);
+  virtual void initializationfunction(void);
+  void Prob_length2age(void);
+ dvar_matrix ALK(dvar_vector& mu, dvar_vector& sig, dvector& x);
+  void Pop_Dynamic(void);
+  void Log_likelihood(void);
+
+};
+#endif
