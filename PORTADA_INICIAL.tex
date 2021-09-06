@@ -1,0 +1,157 @@
+\documentclass[12pt, oneside]{article} % Default font size and left-justified equations
+\usepackage[top=1.5cm,bottom=3cm,left=3.2cm,right=3.2cm,headsep=10pt]{geometry} % Page margins
+\usepackage{xcolor} % Required for specifying colors by name
+\definecolor{ocre}{RGB}{243,102,25} % Define the orange color used for highlighting throughout the book
+\usepackage{avant} % Use the Avantgarde font for headings
+\usepackage{mathptmx} % Use the Adobe Times Roman as the default text font together with math symbols from the Sym­bol, Chancery and 
+\usepackage{color}
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+\usepackage[utf8]{inputenc} % Required for including letters with accents
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{titlesec} % Allows customization of titles
+\usepackage{graphicx} % Required for including pictures
+\graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+\usepackage{tikz} % Required for drawing custom shapes
+\usepackage[spanish]{babel} % English language/hyphenation
+\usepackage{enumitem} % Customize lists
+\setlist{nolistsep} % Reduce spacing between bullet points and numbered lists
+\usepackage{booktabs} % Required for nicer horizontal rules in tables
+\usepackage{eso-pic}
+\usepackage{url}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+%--------color de portada-----------------
+\definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
+\definecolor{namecolor}{cmyk}{0,0,0,0}
+\definecolor{titlecolor}{RGB}{255,127,36}
+\definecolor{liccolor}{RGB}{32,178,170}
+%--------color de portada-----------------
+
+\setlength{\parindent}{2cm}
+\setlength{\parskip}{\baselineskip} 
+
+\renewcommand{\baselinestretch}{1.2}
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%    TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begingroup
+\begin{titlepage}
+    \newgeometry{left=2.5cm,top=0cm,bottom=1cm, right=2.5cm}
+    \AddToShipoutPicture*{\put(0,0){\includegraphics[scale=1]{Figuras/portada2_Portada.pdf}}} % Image background
+    \noindent
+    \vspace{5mm}
+       \begin{minipage}{\textwidth}
+        \parbox[t]{0.9\linewidth}{
+            \centering \fontsize{14pt}{8pt}\selectfont
+            \vspace*{9.3cm} 
+              \hfill \textbf{PRIMER INFORME}
+ 
+  			\centering \fontsize{10pt}{8pt}\selectfont
+            \vspace*{1mm} 
+            \hfill Convenio de Desempeño 2021 
+            
+            \centering \fontsize{9pt}{8pt}\selectfont
+            \vspace*{-5mm} 
+            \hfill \begin{flushright}
+            Estatus y Posibilidades de Explotación Biológicamente Sustentables  \\ 
+            de  Sardina austral de la  Región de Aysén \\
+            del General Carlos Ibáñez del Campo, año 2022 
+			\end{flushright} 
+              
+			\centering \fontsize{10pt}{8pt}\selectfont
+            \vspace*{2mm} 
+            \hfill \textbf{SUBSECRETARIA DE ECONOMIA Y EMT / Septiembre 2021}
+                        
+            \vspace*{0.2cm}
+        }
+    \end{minipage}
+
+\end{titlepage}
+\endgroup
+
+%2 page
+%%%%%%%%%%%%%%%%
+\begin{titlepage}
+
+\renewcommand{\baselinestretch}{1.3}
+\null
+\large
+\begin{center}
+\fontsize{12pt}{8pt}\selectfont
+\hyphenpenalty=10000\uppercase\expandafter{}  I \hspace{0.3pt} N  \hspace{0.3pt} S  \hspace{0.3pt}  T \hspace{0.3pt}   I \hspace{0.3pt}    T \hspace{0.3pt}    U   \hspace{0.3pt}  T  \hspace{0.3pt}  O \hspace{20pt} D  \hspace{0.3pt}  E \hspace{20pt}  F   \hspace{0.3pt} O  \hspace{0.3pt}  M \hspace{0.3pt}   E \hspace{0.3pt}   N  \hspace{0.3pt}  T \hspace{0.3pt}   O  \hspace{20pt}  P \hspace{0.3pt}   E  \hspace{0.3pt}  S \hspace{0.3pt}   Q   \hspace{0.3pt} U  \hspace{0.3pt}  E \hspace{0.3pt}   R  \hspace{0.3pt}  O 
+\end{center}
+\normalsize
+
+
+ \hfill  \includegraphics[height=3.2cm]{Figuras/logoIFOPgris_Portada.pdf}
+
+\vspace*{0.5cm} 
+
+\centering \fontsize{14pt}{8pt}\selectfont
+            \vspace*{1mm} 
+            \hfill \textbf{PRIMER INFORME}
+        
+\centering \fontsize{9pt}{8pt}\selectfont
+            \vspace*{-3mm} 
+            \hfill Convenio de Desempeño 2021 
+            
+\centering \fontsize{9pt}{8pt}\selectfont
+            \vspace*{-16mm} 
+            \hfill \begin{flushright}
+            Estatus y Posibilidades de Explotación  Biológicamente Sustentables de \\
+            Sardina austral de la  Región de Aysén \\
+            del General Carlos Ibáñez del Campo, año 2022 
+              \end{flushright} 
+            \vspace*{-5mm} 
+            \hfill \textbf{SUBSECRETARIA DE ECONOMIA Y EMT / Septiembre 2021}
+
+ %\begin{flushright}                       
+%\begin{tikzpicture}
+%\fill[gray!25] (0,0) rectangle (8,12);
+%\end{tikzpicture}
+% \end{flushright} 
+
+\AddToShipoutPicture*{\put(300,0){\includegraphics[scale=0.95]{Figuras/rectangulogris_Portada.pdf}}} % Image background
+\noindent
+\begin{minipage}{\textwidth}
+ \vspace*{15mm} 
+ \begin{flushright}
+ \fontsize{8.5pt}{8pt}\selectfont
+ \textbf{REQUIRENTE} \\ 
+ SUBSECRETARÍA DE ECONOMÍA Y  \\  
+ EMPRESAS DE MENOR TAMAÑO \\ 
+ \vspace*{5mm} 
+  Subsecretario de Economía y Empresas de Menor Tamaño\\
+ \textbf{Julio Alberto Pertuzé Salas} \\
+ \vspace*{5mm} 
+ \textbf{EJECUTOR} \\ 
+ INSTITUTO DE FOMENTO PESQUERO, IFOP\\
+ \vspace*{4mm} 
+ Director Ejecutivo   
+ \\ \textbf{Luis Parot Donoso} \\
+ \vspace*{4mm} 
+ Jefe (I) División Investigación Pesquera   
+ \\ \textbf{Sergio Lillo Vega} \\
+ \vspace*{8mm} 
+ \fontsize{9pt}{8pt}\selectfont
+ \textbf{JEFE DE PROYECTO}   \\
+ Juan Carlos Quiroz Espinosa \\
+ \vspace*{8mm} 
+ \textbf{AUTORES}   \\
+ María José Zúñiga Basualto \\ 
+ Doris Bucarey Sepúlveda 
+ \end{flushright} 
+\end{minipage}
+\vfill
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%
+
+\end{document}
