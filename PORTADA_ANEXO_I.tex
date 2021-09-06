@@ -1,0 +1,95 @@
+\documentclass[12pt, oneside]{article} % Default font size and left-justified equations
+\usepackage[top=1.5cm,bottom=3cm,left=3.2cm,right=3.2cm,headsep=10pt]{geometry} % Page margins
+\usepackage{xcolor} % Required for specifying colors by name
+\definecolor{ocre}{RGB}{243,102,25} % Define the orange color used for highlighting throughout the book
+\usepackage{avant} % Use the Avantgarde font for headings
+\usepackage{mathptmx} % Use the Adobe Times Roman as the default text font together with math symbols from the Sym­bol, Chancery and 
+\usepackage{color}
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+\usepackage[utf8]{inputenc} % Required for including letters with accents
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{titlesec} % Allows customization of titles
+\usepackage{graphicx} % Required for including pictures
+\graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+\usepackage{tikz} % Required for drawing custom shapes
+\usepackage[spanish]{babel} % English language/hyphenation
+\usepackage{enumitem} % Customize lists
+\setlist{nolistsep} % Reduce spacing between bullet points and numbered lists
+\usepackage{booktabs} % Required for nicer horizontal rules in tables
+\usepackage{eso-pic}
+\usepackage{url}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+%--------color de portada-----------------
+\definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
+\definecolor{namecolor}{cmyk}{0,0,0,0}
+\definecolor{titlecolor}{RGB}{255,127,36}
+\definecolor{liccolor}{RGB}{32,178,170}
+%--------color de portada-----------------
+
+\setlength{\parindent}{2cm}
+\setlength{\parskip}{\baselineskip} 
+
+\renewcommand{\baselinestretch}{1.2}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%
+% PAGINA 1
+%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+
+
+\normalsize
+\vspace*{9cm} 
+
+\noindent
+
+
+ \begin{flushright}
+ \fontsize{40pt}{40pt}\selectfont 	
+ \hyphenpenalty=10000\uppercase\expandafter{}  \textbf{A} \hspace{0.3pt} \textbf{N}  \hspace{0.3pt} \textbf{E} \hspace{0.3pt}  \textbf{X} \hspace{0.3pt}   \textbf{0} \hspace{0.3pt}    \textbf{S}  \\
+  \vspace*{-0.5cm} 
+ ---------------------------------\\
+\end{flushright} 
+
+
+
+
+\vfill
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%
+% PAGINA 2
+%%%%%%%%%%%%%%%%%%
+
+\begingroup
+\begin{titlepage}
+   \normalsize
+\vspace*{7cm} 
+
+\noindent
+
+
+ \begin{flushright}
+ \fontsize{35pt}{35pt}\selectfont 	
+ \hyphenpenalty=10000\uppercase\expandafter{}  \textbf{A} \hspace{0.2pt} \textbf{N}  \hspace{0.2pt} \textbf{E} \hspace{0.2pt}  \textbf{X} \hspace{0.2pt}   \textbf{0} \hspace{8.5pt}    \textbf{I}  \\
+ \vspace*{-0.5cm} 
+ --------------------------------------\\
+\end{flushright} 
+
+\vspace*{-1.5cm} 
+
+ \begin{flushright}
+  \fontsize{14pt}{14pt}\selectfont 
+ Proceso de actualización de datos de entrada al modelo de evaluación de stock de Sardina común de la Región de Valparaíso a la Región de Los Lagos
+ \end{flushright} 
+      
+\end{titlepage}
+\endgroup
+
+
+\end{document}
