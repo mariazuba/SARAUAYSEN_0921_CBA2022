@@ -45,7 +45,7 @@ BDM=function(K,dep,b,C,r){  ### biomass dynamics model
 \pagebreak
 
 ## Simulación
-```{r, echo=T}
+```{r, echo=F}
 ##################################################################################################
 # simulation 
 ##################################################################################################
@@ -99,7 +99,7 @@ sim1=function(k25=k25,k75=k75,r25=r25,r75=r75,yr=yr,C=C,nsim=nsim,msy=NULL){
 
 
 # Ingresa datos de captura 
-```{r,eval=F}
+```{r,eval=T}
 
 #
 #####################################################################
@@ -486,8 +486,8 @@ abline(h=Bmrs,lty=2,lwd=2,col=cols)
 axis(2,at=ax2,labels=ax2/1000,las=1,cex=1)
 mtext(BB,side=2,line=3.5,cex=1.2)
 mtext("Años",side=1,line=3.4,cex=1.2)
-legend(2021,rng1[2]*0.5,c(expression(F[paste("0,30")]),expression(F[paste("0,46")]),
-expression(F[paste("0,58")])),lty=c(2,2,2,2,2),lwd=c(2,2,2,2,2),cex=1.4,
+legend(2021,rng1[2]*0.5,c(expression(F[paste("0,30")]),expression(F[paste("0,44")]),
+expression(F[paste("0,55")])),lty=c(2,2,2,2,2),lwd=c(2,2,2,2,2),cex=1.4,
 col=c(1,2,3),bty="n")
 
 ```
@@ -515,8 +515,8 @@ abline(h=MRS,lty=2,lwd=2,col=cols)
 axis(2,at=ax3,labels=sprintf("%0.0f",ax3/1000),las=1,cex=1.4)
 mtext(CC,side=2,line=3.5,cex=1.2)
 mtext("Años",side=1,line=3.4,cex=1.2)
-legend(2021,rng2[2]*0.5,c(expression(F[paste("0,30")]),expression(F[paste("0,46")]),
-expression(F[paste("0,58")])),lty=c(2,2,2,2,2),lwd=c(2,2,2,2,2),cex=1.4,
+legend(2021,rng2[2]*0.5,c(expression(F[paste("0,30")]),expression(F[paste("0,44")]),
+expression(F[paste("0,55")])),lty=c(2,2,2,2,2),lwd=c(2,2,2,2,2),cex=1.4,
 col=c(1,2,3),bty="n")
 
 
