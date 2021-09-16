@@ -1,0 +1,580 @@
+---
+title: "Método de Zhou 2013"
+output: pdf_document
+---
+
+
+# PCOM  Posterior-focused catch-only method  S. Zhou, Modificado por Elson Leal y María José Zúñiga  para sardina austral Aysen, CBA 2021
+
+ This method requires time series of catch data only. However, some life history parameters, M, Linf, k, T_max, T_maturation,  will improve the performance. Also, a rough guess of maximum depletion level D = B_end/K will be helpful. This example is for single catch series
+
+
+## Modelo
+
+```{r, eval=T,warning=F, include=T, message=F, echo=T}
+
+library(knitr) # para generar reporte Rmarkdown
+library(stringr)
+library(reshape) 
+library(dplyr) 
+library(ggplot2)
+library(ggthemes) # para ggplot
+library(patchwork) # para unir gráficos de ggplot
+library(strucchange) # libreria utilizada para análisis de quiebres
+
+getwd()
+
+##################################################################################################
+# model
+##################################################################################################
+BDM=function(K,dep,b,C,r){  ### biomass dynamics model
+ B=err.B=rep(NA,length(C))   
+ B[1]=b*K;b1=B[1]
+ for(i in 2:length(B)){
+  B[i]=max(min(B[i-1]+r*B[i-1]*(1-B[i-1]/K)-C[i-1],K),0)
+#  err.B[i]=ifelse(!is.na(U[i-1]&U[i]) & B[i]>0,(B[i-1]/B[i]-U[i-1]/U[i]^2,NA)
+ }
+ if(all(B>C) & all(B<=K)){
+  abs(B[length(B)]-dep*K)
+# if(any(U>0)){((B[length(B)]-dep*K)/K)^2 +sum(err.B,na.rm=T)} else ((B[length(B)]-dep*K)/K)^2
+ } else {10^5}
+}
+
+```
+
+\pagebreak
+
+## Simulación
+```{r, echo=F}
+##################################################################################################
+# simulation 
+##################################################################################################
+sim1=function(k25=k25,k75=k75,r25=r25,r75=r75,yr=yr,C=C,nsim=nsim,msy=NULL){ 
+ Bend.keep=K.keep=r.keep=dep.keep=d.keep=vector()
+ nyr=length(yr)
+ B=F2Fmsy=B2Bmsy=matrix(NA,nyr,nsim) 
+ K=r=vector()
+ plot(0,0,type="n",xlim=c(min(yr),max(yr)),ylim=c(-1,round(k75,0)*1.15),
+ xlab="", ylab="",yaxt="n",xaxt="n")
+ for(j in 1:nsim){ 
+   K[1]=runif(1,k25,k75)
+   r[1]=runif(1,r25,r75)  
+   B[1,j]=K[1]
+   for(i in 2:(nyr)){ 
+     r[i]=runif(1,r25,r75) 
+     K[i]=runif(1,k25,k75) 
+     B[i,j]=B[i-1,j]+r[i]*B[i-1,j]*(1-B[i-1,j]/K[i])-C[i-1]
+     F2Fmsy[i,j]=(C[i]/B[i,j])/(r[i]/2)
+     B2Bmsy[i,j]=B[i,j]/(K[i]/2) 
+   }
+   cols<-rgb(runif(1,0,j)/nsim,(nsim-runif(1,0,j))/nsim,(1)/(nsim+100),
+   alpha=0.6)
+   lines(yr,B[,j],col=cols) 
+   K.keep[j]=mean(K)
+   r.keep[j]=mean(r)
+   F2Fmsy[,j]=(C/B[,j])/(mean(r)/2)
+   B2Bmsy[,j]=B[,j]/(mean(K)/2)   
+ }
+ Bend.keep=B[nyr,] 
+ d.keep=B[nyr,]/mean(K)   
+ lines(yr,apply(B,1,median),lty=1,lwd=3)
+ lines(yr,C,lwd=2,col="#363636",lty=2)
+ points(yr,C,pch=21,col=4,bg=4,cex=1.3)
+ y1<-seq(0,round(k75,0)*1.1,le=5);
+ x1<-seq(1,length(yr),by=1)
+ axis(1,at=yr[x1],labels=yr[x1],las=1,cex.axis=1)
+ axis(2,at=y1,labels=format(round(y1/1000,0),3),las=2,cex.axis=1)
+ legend(yr[nyr-4],max(y1)*1.05,c("Biomasa","Captura","RMS"),lty=c(1,2,2),
+ col=c(1,"#363636",2),pch=c(NA,21,NA),lwd=c(2,2,2),pt.bg=c(NA,4,NA),cex=1.3,bty="n")
+ BC<-expression(paste('Biomasa ('%*%'1000 ton) y Captura (ton)',sep="")) 
+ mtext(BC,side=2,line=4.0,cex=1)
+ mtext("Años",side=1,line=3.5,cex=1)
+ if(is.null(msy)){} else {abline(h=msy,lty=2,col=2,lwd=2)}
+ msy=K.keep*r.keep/4
+ return(list(K.keep,r.keep,msy,Bend.keep,d.keep,B,r,F2Fmsy,B2Bmsy))   
+}
+
+
+```
+
+
+# Ingresa datos de captura 
+```{r,eval=T}
+
+#
+#####################################################################
+# input catch data and r range for sautral XI stock 
+#####################################################################
+C=c(4033,5318,4163,7547,5097,3853,653,1352,1839,4488)
+yr=seq(2012,2021)
+r.lci=0.85;
+r.uci=1.2
+#####################################################################
+# search through K grids, with specific range for K1 follow 
+#####################################################################
+N1=100
+K1=exp(seq(log(max(C)),log(max(C)*50),l=N1))
+#####################################################################
+# genera los valores de la deplecion
+#####################################################################
+dep=round(seq(0.1,0.8,0.05),2)
+nd=length(dep)
+r1=obj1=matrix(0,N1,nd)  #matriz que almacena los output de las funciones
+b=1#Si (C[1]/max(C)<0.5, (0.5+0.9)/2 (0.3+0.6)/2);b=0.5
+# ciclo
+for(j in 1:nd){
+  for(i in 1:N1){
+    out=optimize(BDM,K=K1[i],b=b,C=C,dep=dep[j],
+    interval=c(r.lci-.05,r.uci+.05))
+    r1[i,j]=out$min
+    obj1[i,j]=out$obj
+  }
+}
+
+#####################################################################
+#
+#vLinf=58.95;vk=0.28;Tmax=10;Tmat=NA;T=17
+#M=vector()
+#M[1]=exp(1.44-0.982*log(Tmax))
+#M[2]=1.65/Tmat
+#M[3]=exp(1.2-0.17*log(vLinf)+log(vk))
+#M[4]=1.82*vk
+#M[5]=exp(-0.0152-0.279*log(vLinf)+0.6543*log(vk)+0.463*log(T))
+#w=0.87 #para teleost y w=0.41 para chondrithys
+#r.mean=2*mean(M,na.rm=T)*w
+#r.sd=sd(M,na.rm=T)
+#r.backup=r
+#r[r > r.mean+2*r.sd | r < r.mean-2*r.sd]=NA
+
+############################# 
+r1.backup=r1  ;# r1=r1.backup
+r1[obj1 > K1*0.01]=NA
+r1[r1 > r.uci | r1 < r.lci]=NA      
+#############################
+kr=as.data.frame(cbind(K1,r1))  
+colnames(kr)=c('k',dep) 
+all=cbind(K1,stack(kr[,2:nd+1]))#antes nd+1
+colnames(all)=c("k","r","ind")
+
+all$d=as.numeric(as.character(all$ind))
+all=all[,c(1,2,4)]
+all=all[!is.na(all[,2]),] 
+all$msy=all[,1]*all[,2]/4 
+
+#############################
+# estimate reference points
+#############################
+#cutoff=ifelse(tail(C,1)/max(C)<=0.5,0.5,0.8)
+all2     =all[!is.na(all$r) & all$d <= 0.50,]#cutoff,assume upper depeltion=0.50
+quan1    =apply(all2,2,quantile)
+k25      =quan1[,1][2]
+k75      =quan1[,1][4]
+r25      =quan1[,2][2]
+r75      =quan1[,2][4]
+msy.media=quan1[,4][3]
+all3     =all2[all2$k>k25 & all2$k<k75 & all2$r>r25 & all2$r<r75,]
+para     =list(k25=k25,k75=k75,r25=r25,r75=r75)
+```
+
+\pagebreak
+## Figura biomasa
+```{r Fig1_Zhou2013_biomasa, eval=T,warning=F, include=T, message=F, echo=T,fig.height=6,fig.width=7,fig.align="center",fig.path="Figuras/",dev="pdf"}
+
+##################################################################################################
+nsim=100
+#GRAFICA LA BIOMASA
+par(mar=c(5,5.5,1,1),cex.axis=1.3,cex.lab=1.3)
+out1=sim1(k25=k25,k75=k75,r25=r25,r75=r75,C=C,yr=yr,nsim=nsim,msy=msy.media)
+```
+
+
+```{r, echo=T}
+##################################################################################################
+#EXTRAE DATOS DE INTERES PARA LA INCERTIDUMBRE
+##################################################################################################
+F2Fmsy  =as.data.frame(out1[8]);
+B2Bmsy  =as.data.frame(out1[9])
+quant   =function(x)quantile(x,c(0.2,0.8))
+
+dat.out =data.frame(year=yr,
+                    B2Bmsy.med=apply(B2Bmsy,1,median),
+                    quan1.B=apply(B2Bmsy,1,quant)[1,],
+                    quan3.B=apply(B2Bmsy,1,quant)[2,],
+                    F2Fmsy.med=apply(F2Fmsy,1,median),
+                    quan1.F=apply(F2Fmsy,1,quant)[1,],
+                    quan3.F=apply(F2Fmsy,1,quant)[2,])
+
+BF2msy.end = data.frame(t(rbind(B2Bmsy[length(yr),],F2Fmsy[length(yr),])))
+colnames(BF2msy.end)=c("B2Bmsy","F2Fmsy")
+#kable(BF2msy.end)
+#
+out1.backup=out1 #out1=out1.backup
+sp=out1[1:5]
+sp=as.data.frame(sp)   # summary(sp)
+colnames(sp)=c("k","r","msy","Bend","Depletion")
+BendD=apply(sp,2,quantile)
+###############################################################
+#FINAL RESULT
+#####################################################################
+tabla<-cbind(quan1[,c(1,2,4)],BendD[,4:5])
+write.csv2(tabla,"tabla1.csv",row.names=FALSE) 
+kable(tabla)
+
+Bioma <-apply(out1.backup[[6]],1,quantile)
+#note: Bmsy = k/2, Blim = k/4 
+B.sim =data.frame(out1[6])
+BF    =t(apply(B.sim,1,quantile))
+BF    =cbind(BF,C/BF)
+BRP   =c(quan1[3,1]/2,quan1[3,2]/2)
+fs    =data.frame(cbind(BF[,c(8,3)],yr)) # F y Biomasa media
+#GRAFICA BIOMASA V/S CPUE
+#plot(yr,BF[,3],type="b",ylab="Biomasa and CPUE")
+#par(new=T)
+#plot(yr,U,type="b",col=2,axes=F,xlab="",ylab="")
+#
+```
+\pagebreak
+## Sensibilidad
+```{r Fig2_Zhou2013_depletion, eval=T,warning=F, include=T, message=F, echo=T,fig.height=9,fig.width=10,fig.align="center",fig.path="Figuras/",dev="pdf"}
+#######################################################
+#  sensitivity to assumed upper depletion (if needed) #
+#######################################################
+med.out=low.out=up.out=matrix(NA,nrow=4,ncol=6)
+d.l=c(0.45,0.6,0.7,0.8)  # assumed upper depletion levels
+layout(matrix(1:4,ncol=2,byrow=T),widths=c(1,1),heights=c(1,1))
+for(i in 1:4){ 
+  all2=all[!is.na(all$r) & all$d <= d.l[i],]    
+  quan1=apply(all2,2,quantile)
+  k25=quan1[,1][2]
+  k75=quan1[,1][4]
+  r25=quan1[,2][2]
+  r75=quan1[,2][4]
+  msy.median=quan1[,4][3]
+  nsim=100
+  ##################################################################################
+  #Figura
+  par(mar=c(5,5.5,1,1),cex.axis=1.3)
+  out1=sim1(k25=k25,k75=k75,r25=r25,r75=r75,C=C,yr=yr,nsim=nsim,msy=msy.media)
+  tex=paste("reducción=",d.l[i],sep="")
+  text(2015,round(para$k25,0)*0.26,tex,cex=1.2,xpd=T)
+  ##################################################################################
+  # Tablas
+  sp  = out1[1:5]
+  sp  = as.data.frame(sp)   # summary(sp)
+  colnames(sp)= c('k','r','msy','Bend','D')
+  BendD = apply(sp,2,quantile)
+  
+  med.out[i,] =(c(quan1[3,],BendD[3,4:5]))
+  low.out[i,] =(c(quan1[2,],BendD[1,4:5]))
+  up.out[i,]  =(c(quan1[4,],BendD[5,4:5]))
+  
+  med.out[,3] =t(d.l)
+  low.out[,3] =t(d.l)
+  up.out[,3]  =t(d.l)
+  
+  colnames(med.out)=c("k","r","d.upper","msy","Bend","D")
+  colnames(low.out)=c("k","r","d.upper","msy","Bend","D")
+  colnames(up.out)=c("k","r","d.upper","msy","Bend","D")
+  
+  kable(med.out)
+  kable(low.out)
+  kable(up.out)
+  ##################################################################################
+}
+
+```
+
+
+\pagebreak
+
+```{r Fig3_Zhou2013_sensitivity, eval=T,warning=F, include=T, message=F, echo=T,fig.height=10,fig.width=10,fig.align="center",fig.path="Figuras/",dev="pdf"}
+
+##################################################################################################
+# parameters as a function of assumed upper depletion level
+##################################################################################################
+#name3<-paste(getwd(),"/Figuras/Fig3_Zhou2013_sensitivity.png",sep="")
+#png(file=name3,width=900,height=1000)
+layout(matrix(1:4,ncol=2,byrow=T),widths=c(1,1),heights=c(1,1))
+par(mar=c(5.6,6.7,4,4),cex.axis=1.4) 
+
+plot(med.out[,3],med.out[,1]/1000,ylim=c(0,max(med.out[,1]/1000*1.3)),type='l',lwd=2,xlab='',ylab='',las=1)
+lines(low.out[,3],low.out[,1]/1000,lty=2);lines(up.out[,3],up.out[,1]/1000,lty=2)
+mtext(expression(paste('K ('%*%'1000 ton)')),side=2,line=3.8,cex=1.4)
+mtext("Reducción superior",side=1,line=3.6,cex=1.4)
+
+plot(med.out[,3],med.out[,2],ylim=c(0,max(med.out[,2]*1.3)),type='l',lwd=2,xlab='',ylab='',las=1)
+mtext('r',side=2,line=3.8,cex=1.4)
+mtext("Reducción superior",side=1,line=3.6,cex=1.4)
+lines(low.out[,3],low.out[,2],lty=2);lines(up.out[,3],up.out[,2],lty=2)
+
+plot(med.out[,3],med.out[,4]/1000,ylim=c(0,max(med.out[,4]/1000*1.3)),type='l',lwd=2,xlab='',ylab='',las=1)
+lines(low.out[,3],low.out[,4]/1000,lty=2);lines(up.out[,3],up.out[,4]/1000,lty=2)
+mtext(expression(paste('RMS ('%*%'1000 ton)')),side=2,line=3.8,cex=1.4)
+mtext("Reducción superior",side=1,line=3.6,cex=1.4)
+
+plot(med.out[,3],med.out[,6],ylim=c(0,max(med.out[,6]*1.5)),type='l',lwd=2,xlab='',ylab='',las=1)
+lines(low.out[,3],low.out[,6],lty=2);lines(up.out[,3],up.out[,6],lty=2)
+mtext("Reducción",side=2,line=3.8,cex=1.4)
+mtext("Reducción superior",side=1,line=3.6,cex=1.4)
+
+#dev.off()
+
+
+```
+
+```{r Fig4_Zhou2013_fase, eval=T,warning=F, include=T, message=F, echo=T,fig.height=7.5,fig.width=7.5,fig.align="center",fig.path="Figuras/",dev="pdf" }
+##################################################################################################
+# GRAFICA DIAGRAMA DE FASE
+##################################################################################################
+library(MASS)
+
+K      <- med.out[1,1]
+mc.dat <-BF2msy.end
+Bmrs   <-tabla[3,1]/2 #BMRS
+Fmrs   <-tabla[3,2]/2 #FMRS
+Fest   <-C/Bioma[3,] #F anual
+Y1     <-Fest/Fmrs;
+X1     <-Bioma[3,]/Bmrs
+Z1     <-Bioma[3,]/K
+#h=rep(0.13,4)
+z<-kde2d(mc.dat[,1],mc.dat[,2],n=100,
+lims=c(range(c(0,max(X1))),range(c(0,max(Y1)*1.7))))
+est<-z$z/max(z$z);z$z<-est
+#Bmrs=43590;Fmrs=0.3515;Fest=C/Bioma[3,]
+#Y1<-Fest/Fmrs;X1<-Bioma[2,]/Bmrs
+#
+soli<-cbind(yr,round(Bioma[3,],0),round(Fest,2),round(Z1,2),round(X1,2),round(Y1,2))
+colnames(soli)<-c("year","BT","Fest","B_Bo","Brel","Frel")
+
+kable(soli)
+
+kable(rbind(Bmrs,Fmrs))
+#library(rJava)                                         ## PROBLEMAS CON ESTO
+#library(xlsx)
+write.csv2(soli,"tabla2.csv",row.names=FALSE) 
+#DEFINE LAS AREAS DE LOS POLIGONOS
+cols<-c("#696969","#A8A8A8","#DEDEDE")
+ini<-c(-0.09);
+xmax<-max(X1)*1.35;
+ymax<-max(Y1)*1.22;
+xmin<-(0.08)
+pol1<-matrix(c(0.9,ini,0.9,1.1,xmax,1.1,xmax,0.75,1.25,0.75,1.25,ini),
+ncol=2,byrow=T)
+pol2<-matrix(c(1.25,ini,1.25,0.75,xmax,0.75,xmax,ini),ncol=2,byrow=T)
+pol3<-matrix(c(xmax,1.1,xmax,ymax,0.9,ymax,0.9,1.1),ncol=2,byrow=T)
+pol4<-matrix(c(0.5,ini,0.9,ini,0.9,ymax,0.5,ymax),ncol=2,byrow=T)
+pol5<-matrix(c(-0.07,ini,0.5,ini,0.5,ymax,-0.07,ymax),ncol=2,byrow=T)
+
+#name4<-paste(getwd(),"/Figuras/Fig4_Zhou2013_fase.png",sep="")
+#png(file=name4,width=1200,height=1000)
+par(mar=c(6.1,6.5,4.8,4.8),cex.axis=1,cex.lab=1)
+plot(X1,Y1,col=0,xlab="",ylab="",yaxt="n",xlim=c(xmin,max(X1)*1.1),
+ylim=c(0.09,max(Y1)*1.17))
+axis(2,las=1)
+polygon(pol5,col=cols[1],border=1);polygon(pol4,col=cols[2],border=1)
+polygon(pol3,col=cols[3],border=1);polygon(pol2,col=cols[3],border=1)
+polygon(pol1,col="white",border="black")
+#points(mc.dat[,1],mc.dat[,2],pch=21,bg="#B5B5B5",cex=0.9,col=1)
+lines(X1,Y1,lty=2,col=1,lwd=2)
+lines(X1,Y1,type="p",bg=2,pch=21,cex=1,lwd=2)
+abline(v=1,lty=2,col=8,lwd=2);abline(h=1,lty=2,col=8,lwd=2)
+abline(v=0.5,lty=2,col=8,lwd=2)
+contour(z,drawlabels=FALSE,levels=c(0.1,0.25,0.5,0.75),add=TRUE)
+text(0.5,max(Y1)*1.29,expression(PBR[paste("agotamiento")]),cex=1.1,
+pos=1,xpd=T)
+text(1,max(Y1)*1.29,expression(B[paste("RMS")]),cex=1.1,pos=1,xpd=T)
+text(max(X1)*1.19,1.11,expression(F[paste("RMS")]),cex=1.1,pos=1,xpd=T)
+mtext(expression(paste("Biomasa total relativa a ",B[paste("RMS")],sep="")),
+side=1,line=4.2,cex=1.2)
+mtext(expression(paste("Mortalidad por pesca relativa a ",F[paste("RMS")],
+sep="")),side=2,line=3.8,cex=1.2)
+#a2<-which(yr%in%seq(2015,1994,by=-2)==TRUE)
+a2<-c(1,2,3,4,5,6,7,8,9)
+text(X1[a2],Y1[a2]*1.06,yr[a2],cex=1,pos=4,col=4)
+#text(1.10,0.83,"Plena Explotación",cex=1.6,pos=4,col=1,lwd=2)
+#text(1.56,0.31,"Sub Explotación",cex=1.6,pos=4,col=1,lwd=2)
+#text(1.33,1.51,"Sobrepesca",cex=1.6,pos=4,col=1,lwd=2)
+#text(0.58,0.67,"Sobre",cex=1.6,pos=4,col=1,lwd=2)
+#text(0.52,0.51,"Explotación",cex=1.6,pos=4,col=1,lwd=2)
+#text(0.68,1.18,"Sobre-explotación y Sobrepesca",cex=1.6,pos=4,lwd=2,srt=90)
+#text(0.23,1.18,"Colapso y/o Agotamiento",cex=1.6,pos=4,lwd=2,srt=90)
+box()
+#dev.off()
+
+
+```
+
+
+
+\pagebreak
+
+## Cálculo de CBA
+```{r,echo=T}
+
+##################################################################################################
+#CALCULO DE LA CBA  PARA SARDINA AUSTRAL XI
+##################################################################################################
+mata <-out1.backup[1:5];
+mm   <-length(mata)
+mato <-vector()
+
+for(p in 1:mm){
+  mato <-cbind(mato,mata[[p]])}
+  mate <-as.data.frame(mato)
+  colnames(mate)<-c("k","r","msy","Bend","Depletion")
+
+yy      <-length(yr)
+prob    <-c(0.6666667,1.00,1.25) # pnderadores de Frms
+ss      <-dim(sp)
+yrs_pro <-seq(yr[yy],yr[yy]+11,by=1) # años de proyección
+yyp     <-length(yrs_pro)
+
+BT=CT=array(NA,c(length(prob),ss[1],length(yrs_pro)))
+
+BT[,,1] <-Bioma[3,yy]
+CT[,,1] <-C[yy]
+Fi      <-Fmrs*prob
+
+# y = Frms ponderados
+# n = número de simulaciones
+# m = años de proyección
+
+for(y in 1:length(Fi)){ 
+ for(n in 1:ss[1]){
+  ki=sp$k[n] # parámetro K simulado
+  ri=sp$r[n] # parámetro r simulado
+  for(m in 1:(yyp-1)){ # PROYECCIÓN
+   if(m==1){ 
+     CT[y,,1]=C[yy]} # igual a la captura del último año
+    else {
+      CT[y,n,m]=BT[y,n,m]*Fi[y]} # captura proyectada
+      BT[y,n,m+1]=BT[y,n,m]+ri*BT[y,n,m]*(1-BT[y,n,m]/ki)-CT[y,n,m] # biomasa total proyectada
+   if(m==(yyp-1)){
+     CT[y,n,m+1]=BT[y,n,m+1]*Fi[y]}
+  }
+ }
+}
+
+
+```
+
+
+
+```{r Fig5_Zhou2013_Proyeccion_B,eval=T,warning=F, include=T, message=F, echo=T,fig.height=5,fig.width=5,fig.align="center",fig.path="Figuras/",dev="pdf"}
+
+##################################################################################################
+# GRAFICA LA CBA 2 PARA sardina austral
+##################################################################################################
+FF   <-formatC(Fi,format="f",digits=2)
+BB   <-expression(paste("Biomasa (mil t)",sep=""))
+Binf <-tabla[2,1]/2
+Bsup <-tabla[4,1]/2
+rng1 <-range(BT[,,],na.rm=T)
+ax2  <-seq(0,rng1[2]*1.15,by=1500)
+cols <-"#858585"
+y1   <-length(yrs_pro)
+xxxx<-matrix(ncol=3,nrow=11)
+
+par(mar=c(5,5,1,1),cex.axis=1,cex.lab=1)
+plot(yrs_pro[-2],seq(0,rng1[2]*1.15,le=(y1-1)),col=0,type="o",xlab="",ylab="",yaxt="n",ylim=c(0,rng1[2]*0.98),xaxp=c(2020,2032,12))
+
+for(x in 1:length(Fi)){
+  xxxx[,x]<-apply(BT[x,,],2,quantile)[3,-2]
+ lines(yrs_pro[-2],xxxx[,x],col=x,lty=2,lwd=2)
+}
+abline(h=Bmrs,lty=2,lwd=2,col=cols)
+axis(2,at=ax2,labels=ax2/1000,las=1,cex=1)
+mtext(BB,side=2,line=3.5,cex=1.2)
+mtext("Años",side=1,line=3.4,cex=1.2)
+legend(2021,rng1[2]*0.5,c(expression(F[paste("0,30")]),expression(F[paste("0,44")]),
+expression(F[paste("0,55")])),lty=c(2,2,2,2,2),lwd=c(2,2,2,2,2),cex=1.4,
+col=c(1,2,3),bty="n")
+
+```
+
+```{r Fig6_Zhou2013_capturas,eval=T,warning=F, include=T, message=F, echo=T,fig.height=5,fig.width=5,fig.align="center",fig.path="Figuras/",dev="pdf"}
+
+##################################################################################################
+# GRAFICA LA CAPTURA
+##################################################################################################
+CC   <-expression(paste("Captura (mil t )",sep=""))
+MRS  <-tabla[3,3] #50%
+rng2 <-range(CT[,,],na.rm=T)
+ax3  <-seq(0,rng2[2]*1.15,by=1000)
+
+xxxx<-matrix(ncol=3,nrow=11)
+
+par(mar=c(5,5,1,1),cex.axis=1,cex.lab=1)
+plot(yrs_pro[-2],seq(0,rng2[2]*1.15,le=11),col=0,type="o",xlab="",ylab="",yaxt="n",ylim=c(0,rng2[2]*0.95),xaxp=c(2020,2032,12))
+
+for(x in 1:length(Fi)){
+  xxxx[,x]<-apply(CT[x,,],2,quantile)[3,-2]
+ lines(yrs_pro[-2],xxxx[,x],col=x,lty=2,lwd=2)
+}
+abline(h=MRS,lty=2,lwd=2,col=cols)
+axis(2,at=ax3,labels=sprintf("%0.0f",ax3/1000),las=1,cex=1.4)
+mtext(CC,side=2,line=3.5,cex=1.2)
+mtext("Años",side=1,line=3.4,cex=1.2)
+legend(2021,rng2[2]*0.5,c(expression(F[paste("0,30")]),expression(F[paste("0,44")]),
+expression(F[paste("0,55")])),lty=c(2,2,2,2,2),lwd=c(2,2,2,2,2),cex=1.4,
+col=c(1,2,3),bty="n")
+
+
+```
+
+
+```{r , echo=T}
+##################################################################################################
+# TABLA DE RESULTADOS CAPTURA 2021
+##################################################################################################
+ct<-matrix(NA,length(Fi),5)
+for(i in 1:length(Fi)){
+ ct[i,]<-as.numeric(quantile(CT[i,,2],probs=c(.1,.2,.3,.4,.5)))  # CT[i,,2] (el 2 representa 1 año de proyección, 1 es el año actual)
+}
+colnames(ct)<-c("10%","20%","30%","40%","50%")
+rownames(ct)<-formatC(Fi,format="f",digits=2)
+cat("\n")
+print(ct)
+
+```
+
+
+
+```{r Fig7_Zhou2013_compara,eval=F,warning=F, include=T, message=F, echo=T,fig.height=4,fig.width=7,fig.align="center",fig.path="Figuras/",dev="pdf"}
+##################################################################################################
+# TABLA DE RESULTADOS biomasa 2021
+##################################################################################################
+bt<-matrix(NA,length(Fi),5)
+for(i in 1:length(Fi)){
+ bt[i,]<-as.numeric(quantile(BT[i,,2],probs=c(.1,.2,.3,.4,.5)))  # CT[i,,2] (el 2 representa 1 año de proyección, 1 es el año actual)
+}
+colnames(bt)<-c("10%","20%","30%","40%","50%")
+rownames(bt)<-formatC(Fi,format="f",digits=2)
+cat("\n")
+print(bt)
+
+
+year<-seq(2012,2021)
+bioHil<-c(NA,17712,12394,11186,6911,5161,4212,6108,7933,8592)
+
+par(mar=c(5,5,1,1),cex.axis=1,cex.lab=1)
+plot(year,c(soli[,2],bt[2,5]),type="o",pch=19,ylim=c(0,20000), xaxp=c(2012,2022,10),ylab="Biomasa total",xlab="Años")
+lines(year,bioHil,type="o",col=2,pch=19)
+legend(2017,16000,c("Hilborn y Mangel 1997","Zhou 2013"),
+       bty="n",lwd=1,pch=19,col=c(2,1), title="Método de estimación")
+```
+
+
+```{r, echo=T}
+
+##################################################################################################
+# RANGO CBA PARA PBR Al MRS (2) y EL 2021(2)
+##################################################################################################
+rango<-quantile(CT[2,,2],prob=c(0.025,0.25,0.50,0.75,0.975))
+
+kable(rango)
+
+#
+#FIN
+```
+
