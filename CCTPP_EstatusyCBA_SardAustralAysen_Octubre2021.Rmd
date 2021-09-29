@@ -1,7 +1,7 @@
 ---
-title: Revisión del Estatus y  Captura Biológicamente Aceptable 2021 de sardina austral de la Región de Aysén
+title: Estatus y  Captura Biológicamente Aceptable 2022 de sardina austral de la Región de Aysén
 author: "María José Zúñiga"
-date: 'Sesión N°4: 01-07-2021'
+date: 'Sesión N°6: 12-14 de octubre 2021'
 output:
    beamer_presentation:
     colortheme: rose
@@ -90,6 +90,24 @@ institute: INSTITUTO DE FOMENTO PESQUERO
 \end{figure}
 ```
 
+# CBA inicial 2022 (Asesoría de septiembre 2021 - Hito 1)
+
+
++-------------+----------+----------+----------+
+| Percentiles | F = 0,30 | F = 0,44 | F = 0,55 |
++:===========:+:========:+:========:+:========:+
+| 10%         | 2.275    | 3.412    | 4.265    |
++-------------+----------+----------+----------+
+| 20%         | 2.282    | 3.422    | 4.278    |
++-------------+----------+----------+----------+
+| 30%         | 2.287    | 3.431    | 4.288    |
++-------------+----------+----------+----------+
+| 40%         | 2.292    | 3.437    | 4.297    |
++-------------+----------+----------+----------+
+| 50%         | 2.297    | 3.446    | 4.307    |
++-------------+----------+----------+----------+
+
+
 # CBA inicial 2021 (Asesoría de septiembre 2020 - Hito 1)
 
 +-------------+----------+----------+----------+
@@ -123,4 +141,7 @@ Considerando un $F$ = 0,31 equivalente a 2/3 $F_{RMS}$, el CCT-PP recomendó una
 +-------------+----------+----------+----------+
 | 50%         | 2.995    | 4.492    | 5.615    |
 +-------------+----------+----------+----------+
+
+
+
 
