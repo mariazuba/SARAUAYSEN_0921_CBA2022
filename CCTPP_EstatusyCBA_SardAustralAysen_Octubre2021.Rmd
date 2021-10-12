@@ -1,6 +1,6 @@
 ---
 title: Estatus y  Captura Biológicamente Aceptable 2022 de sardina austral de la Región de Aysén
-author: "María José Zúñiga"
+author: "Grupo Pelágicos DER - María José Zúñiga"
 date: 'Sesión N°6: 12-14 de octubre 2021'
 output:
    beamer_presentation:
@@ -9,6 +9,15 @@ output:
 subtitle: Comité Científico de Pesquerías de Pequeños Pelágicos
 institute: INSTITUTO DE FOMENTO PESQUERO
 ---
+
+# \small STOCK DE SARDINA AUSTRAL DE LA REGIÓN DE AYSÉN
+
+```{=tex}
+\begin{figure}[htb!]
+\centering
+\includegraphics[width=0.5\textwidth]{Figuras_base/Fig1.pdf}
+\end{figure}
+```
 
 # Modelos data poor utilizados
 
@@ -22,126 +31,416 @@ institute: INSTITUTO DE FOMENTO PESQUERO
 * Se utiliza para estimar el Estatus y CBA 
 
 
-# Desembarques de sardina austral en la Región de Aysén
-```{=tex}
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Figuras/Fig9_InformeFinal-1.pdf}
-\end{figure}
-```
-
-# Índice de depleción del stock según la metodología de Hilborn y Mangel (1997)
-
-```{=tex}
-\begin{figure}[h!]
-\centering
-\includegraphics[width=1\textwidth]{Figuras/Fig10_InformeFinal-1.pdf}
-\end{figure}
-```
-
-# Estimaciones de biomasa total de sardina austral en la Región de Aysén
+# Datos de sardina austral en la Región de Aysén
 
 
 ```{=tex}
+
+\begin{columns}
+\column{0.7\textwidth}
+
+
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.7\textwidth]{Figuras/Fig1_Zhou2013_biomasa-1.pdf}
+\includegraphics[width=0.95\textwidth]{Figuras_base/Fig9_InformeFinal-1.pdf}
 \end{figure}
+
+\column{0.45\textwidth}
+
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{4.5cm}{!} {
+    \begin{tabular}{|c|cc|}
+    \hline 
+   Año    & Captura (t)        & Índice Acústico  \\ \hline 
+  2012    & 4.033 &  \\ 
+  2013    & 5.318  & 106.685 \\
+  2014    & 4.163  & 32.841  \\ 
+  2015    & 7.547  & 21.973  \\
+  2016    & 5.097  & 44.923  \\
+  2017    & 3.853  & 35.346  \\
+  2018    & 653    & 24.805  \\
+  2019    & 1.352  & 6.568   \\ 
+  2020    & 1.839  & -       \\ 
+  2021    & 4.488*  & 58.922 \\ \hline
+  \end{tabular}}
+        \end{table}
+        
+        \end{columns}
+        
 ```
 
 
-# Comparación método de Hilborn y Mangel (1997) y Zhou et al. (2013)
+# Biomasa total e Índice de reducción del stock según la metodología de Hilborn y Mangel (1997)
+
+```{=tex}
+
+\begin{columns}
+\column{0.75\textwidth}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{Figuras_base/Fig10_InformeFinal-1.pdf}
+\end{figure}
+
+\column{0.45\textwidth}
+
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{4cm}{!} {
+    \begin{tabular}{|c|cc|}
+    \hline 
+ Año  & Biomasa & Reducción  \\ \hline
+ 2013 & 18.216  & 1,00       \\
+ 2014 & 12.898  & 0,71       \\
+ 2015 & 11.537  & 0,63       \\
+ 2016 & 7.138   & 0,39       \\
+ 2017 & 5.272   & 0,29       \\
+ 2018 & 4.207   & 0,23       \\
+ 2019 & 5.962   & 0,33       \\
+ 2020 & 7.594   & 0,42       \\
+ 2021 & 9.051   & 0,50       \\ \hline
+  \end{tabular}}
+        \end{table}
+
+        \end{columns}
+        
+```
+
+\vspace{0.25cm}
+
+\textit{Supuesto de reducción para el año 2021 es igual a 0,50 utilizado en el Método de Zhou et al. (2013)}
+
+
+# Biomasa total del stock según la metodología de étodo de Zhou *et al*. (2013)
+
+
+```{=tex}
+\begin{columns}
+\column{0.75\textwidth}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{Figuras_base/Fig1_Zhou2013_biomasa-1.pdf}
+\end{figure}
+
+\column{0.45\textwidth}
+
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{3cm}{!} {
+    \begin{tabular}{|c|c|}
+    \hline 
+ Año  & $BT_{sept21}$ \\ \hline
+ 2012 & 16.903        \\
+ 2013 & 12.968        \\
+ 2014 & 10.323        \\
+ 2015 & 9.768         \\
+ 2016 & 5.906         \\
+ 2017 & 4.212         \\    
+ 2018 & 3.161         \\
+ 2019 & 4.810         \\
+ 2020 & 6.489         \\
+ 2021 & 8.234         \\ \hline
+  \end{tabular}}
+        \end{table}
+
+        \end{columns}
+        
+\vspace{-0.25cm}
+\scriptsize
+
+- RMS = 3.814 toneladas
+
+- Supuesto de captura 2021 = 4.488 toneladas
+
+```
+
+
+# Sensibilidad al supuesto de reducción del año 2021
 
 ```{=tex}
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.9\textwidth]{Figuras/Fig7_Zhou2013_compara-1.pdf}
+\includegraphics[width=0.75\textwidth]{Figuras_base/Fig2_Zhou2013_depletion-1.pdf}
 \end{figure}
 ```
 
-
-# Análisis de sensibilidad
-
-```{=tex}
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.75\textwidth]{Figuras/Fig2_Zhou2013_depletion-1.pdf}
-\end{figure}
-```
-
-
-# Series históricas de la razón $B/B_{RMS}$ y $F/F_{RMS}$
+# Comparación con asesoría previa
+## Series históricas de la razón $B/B_{RMS}$ y $F/F_{RMS}$
 
 
 ```{=tex}
+
+\begin{columns}
+\column{0.6\textwidth}
+
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.7\textwidth]{Figuras/Fig11_InformeFinal-1.pdf}
+\includegraphics[width=0.98\textwidth]{Figuras_base/Fig11_InformeFinal-1.pdf}
 \end{figure}
+
+\column{0.5\textwidth}
+
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{4cm}{!} {
+    \begin{tabular}{|c|cc|}
+    \hline 
+ PBR       & Sept-21    & Jun-21     \\ \hline
+ $B_{RMS}$ & 8.484      & 8.317      \\
+ $F_{RMS}$ & 0,44       & 0,46       \\ \hline
+  \end{tabular}}
+        \end{table}
+        
+        
+\end{columns}
+
 ```
 
-# Diagrama de fase de sardina austral en la Región de Aysén
+# \small Estatus 2021 y CBA inicial 2022 bajo supuesto de captura base
+
+
+\vspace{-0.25cm}
+
+```{=tex}
+
+\begin{columns}
+\column{0.65\textwidth}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{Figuras_base/Fig4_Zhou2013_fase-1.pdf}
+\end{figure}
+
+\column{0.45\textwidth}
+
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{4.5cm}{!} {
+    \begin{tabular}{|c|cc|}
+    \hline 
+  Percentiles   & \multicolumn{2}{c}{$CBA_{2022}$}  \\ 
+  de            &  2/3 $F_{RMS}$  & $F_{RMS}$       \\ 
+   $C_{RMS}$    & F = 0,30        & F = 0,44        \\ \hline 
+  10\%          & 2.275           & 3.412          \\ 
+  20\%          & 2.282           & 3.422           \\
+  30\%          & 2.287           & 3.431           \\ 
+  40\%          & 2.292           & 3.437           \\
+  $C_{RMS}$     & 2.297           & 3.446           \\ \hline
+  \end{tabular}}
+        \end{table}
+
+\end{columns}
+
+```
+
+
+
+## CBA inicial 2022 (Asesoría de septiembre 2021 - Hito 1)
+
+\scriptsize
+- Supuesto de captura 2021 igual a 4.488 toneladas
+
+- Supuesto de reducción 2021 igual a 50%
+
+
+# 
+
+SUPUESTOS DE CAPTURA 2021 ALTERNATIVOS
+
+# \small Estatus 2021 y CBA inicial 2022 bajo supuesto de captura alternativo 1
+
+\vspace{-0.25cm}
+
+```{=tex}
+
+\begin{columns}
+\column{0.65\textwidth}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{Figuras_supuesto2600/Fig4_Zhou2013_fase-1.pdf}
+\end{figure}
+
+
+\column{0.45\textwidth}
+
+ 
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{4.5cm}{!} {
+    \begin{tabular}{|c|cc|}
+    \hline 
+  Percentiles   & \multicolumn{2}{c}{$CBA_{2022}$}  \\ 
+  de            &  2/3 $F_{RMS}$  & $F_{RMS}$       \\ 
+   $C_{RMS}$    & F = 0,30        & F = 0,44        \\ \hline 
+  10\%          & 2.786           & 4.179           \\ 
+  20\%          & 2.792           & 4.188           \\
+  30\%          & 2.798           & 4.197           \\ 
+  40\%          & 2.803           & 4.204           \\
+  $C_{RMS}$     & 2.808           & 4.211           \\ \hline
+  \end{tabular}}
+        \end{table}
+
+\end{columns}
+
+```
+
+\vspace{-0.25cm}
+
+## \scriptsize Supuesto de captura 2021 igual a 2.600 toneladas
+\scriptsize
+-  El desembarque 2.600 t registrado a septiembre 2021 en la Región de Aysén.
+
+- Supuesto de reducción 2021 igual a 50%
+
+# \small Estatus 2021 y CBA inicial 2022 bajo supuesto de captura alternativo 2
+
+
+\vspace{-0.25cm}
+
+```{=tex}
+
+\begin{columns}
+\column{0.65\textwidth}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{Figuras_supuesto3600/Fig4_Zhou2013_fase-1.pdf}
+\end{figure}
+
+
+\column{0.45\textwidth}
+
+ 
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{4.5cm}{!} {
+    \begin{tabular}{|c|cc|}
+    \hline 
+  Percentiles   & \multicolumn{2}{c}{$CBA_{2022}$}    \\ 
+  de            &  2/3 $F_{RMS}$  & $F_{RMS}$          \\ 
+   $C_{RMS}$    & F = 0,30        & F = 0,44          \\ \hline 
+  10\%          & 2.477  & 3.715  \\ 
+  20\%          & 2.485  & 3.728  \\
+  30\%          & 2.490  & 3.735  \\ 
+  40\%          & 2.493  & 3.740  \\
+  $C_{RMS}$     & 2.498  & 3.748  \\ \hline
+  \end{tabular}}
+        \end{table}
+
+\end{columns}
+
+```
+\vspace{-0.25cm}
+
+## \scriptsize Supuesto de captura 2021 igual a 3.600 toneladas
+\scriptsize
+- Asumiendo una captura de x toneladas entre los meses de octubre a diciembre 2021
+
+- Supuesto de reducción 2021 igual a 50%
+
+#
+
+CRITERIOS UTILIZADOS EN ASESORÍAS PREVIAS
+
+# \small Estatus 2020 y CBA 2021 
+## Actualización de la CBA 2021      (Asesoría de junio 2021 - Hito 2)
 
 
 ```{=tex}
+
+\begin{columns}
+\column{0.65\textwidth}
+
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.7\textwidth]{Figuras/Fig4_Zhou2013_fase-1.pdf}
+\includegraphics[width=0.9\textwidth]{Figuras/Fig4_Zhou2013_fase-Estatus2020.pdf}
 \end{figure}
+
+
+\column{0.5\textwidth}
+
+ 
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{4.5cm}{!} {
+    \begin{tabular}{|c|cc|}
+    \hline 
+  Percentiles   & \multicolumn{2}{c}{$CBA_{2021}$}    \\ 
+  de            &  2/3 $F_{RMS}$  & $F_{RMS}$          \\ 
+   $C_{RMS}$    & F = 0,31        & F = 0,46          \\ \hline 
+  10\%          & 2.969  & 4.453 \\ 
+  20\%          & 2.975  & 4.462  \\
+  30\%          & 2.984  & 4.475  \\ 
+  40\%          & 2.992  & \textbf{4.488}  \\
+  $C_{RMS}$     & 2.995  & 4.492  \\ \hline
+  \end{tabular}}
+        \end{table}
+
+\vspace{0.25cm}
+
+\scriptsize Considerando un $F$ = 0,46 equivalenta a $F_{RMS}$, el CCT-PP recomendó una CBA máxima de 4.488 toneladas para el año 2021.
+
+\end{columns}
+
 ```
 
-# CBA inicial 2022 (Asesoría de septiembre 2021 - Hito 1)
+
+# \small Estatus 2020 y CBA 2021 
+## CBA inicial 2021 (Asesoría de septiembre 2020 - Hito 1)
+
+```{=tex}
+
+\begin{columns}
+\column{0.65\textwidth}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\textwidth]{Figuras/Estatus2020_sept2020.png}
+\end{figure}
 
 
-+-------------+----------+----------+----------+
-| Percentiles | F = 0,30 | F = 0,44 | F = 0,55 |
-+:===========:+:========:+:========:+:========:+
-| 10%         | 2.275    | 3.412    | 4.265    |
-+-------------+----------+----------+----------+
-| 20%         | 2.282    | 3.422    | 4.278    |
-+-------------+----------+----------+----------+
-| 30%         | 2.287    | 3.431    | 4.288    |
-+-------------+----------+----------+----------+
-| 40%         | 2.292    | 3.437    | 4.297    |
-+-------------+----------+----------+----------+
-| 50%         | 2.297    | 3.446    | 4.307    |
-+-------------+----------+----------+----------+
+\column{0.5\textwidth}
+
+ 
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{4.5cm}{!} {
+    \begin{tabular}{|c|cc|}
+    \hline 
+  Percentiles   & \multicolumn{2}{c}{$CBA_{2021}$}    \\ 
+  de            &  2/3 $F_{RMS}$  & $F_{RMS}$          \\ 
+   $C_{RMS}$    & F = 0,31        & F = 0,46          \\ \hline 
+  10\%          & 2.770  & 4.155 \\ 
+  20\%          & 2.779  & 4.169  \\
+  30\%          & 2.786  & 4.179  \\ 
+  40\%          & 2.791  & 4.186  \\
+  $C_{RMS}$     & \textbf{2.797}  & 4.196  \\ \hline
+  \end{tabular}}
+        \end{table}
+
+\vspace{0.25cm}
+
+\scriptsize Considerando un $F$ = 0,31 equivalente a 2/3 $F_{RMS}$, el CCT-PP recomendó una CBA máxima de 2.797 toneladas para el año 2021.
+
+\end{columns}
+
+```
 
 
-# CBA inicial 2021 (Asesoría de septiembre 2020 - Hito 1)
+#
 
-+-------------+----------+----------+----------+
-| Percentiles | F = 0,31 | F = 0,46 | F = 0,58 |
-+:===========:+:========:+:========:+:========:+
-| 10%         | 2.770    | 4.155    | 5.193    |
-+-------------+----------+----------+----------+
-| 20%         | 2.779    | 4.169    | 5.211    |
-+-------------+----------+----------+----------+
-| 30%         | 2.786    | 4.179    | 5.223    |
-+-------------+----------+----------+----------+
-| 40%         | 2.791    | 4.186    | 5.233    |
-+-------------+----------+----------+----------+
-| 50%         | 2.797    | 4.196    | 5.245    |
-+-------------+----------+----------+----------+
-
-Considerando un $F$ = 0,31 equivalente a 2/3 $F_{RMS}$, el CCT-PP recomendó una CBA máxima de 2.797 toneladas para el año 2021.
-
-# Actualización de la CBA 2021 (Asesoría de junio 2021 - Hito 2)
-
-+-------------+----------+----------+----------+
-| Percentiles | F = 0,31 | F = 0,46 | F = 0,58 |
-+=============+==========+==========+==========+
-| 10%         | 2.969    | 4.453    | 5.566    |
-+-------------+----------+----------+----------+
-| 20%         | 2.975    | 4.462    | 5.578    |
-+-------------+----------+----------+----------+
-| 30%         | 2.984    | 4.475    | 5.594    |
-+-------------+----------+----------+----------+
-| 40%         | 2.992    | 4.488    | 5.610    |
-+-------------+----------+----------+----------+
-| 50%         | 2.995    | 4.492    | 5.615    |
-+-------------+----------+----------+----------+
-
-
+Gracias por su atención
 
 
